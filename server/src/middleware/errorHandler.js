@@ -64,7 +64,12 @@ export function errorHandler(err, req, res, next) {
 
   // 1) 业务异常
   if (err instanceof AppError) {
-    return sendError(res, err.code, err.message, err.httpStatus);
+    // 校验失败时把逐字段明细一并返回，页面可完整展示而不只是第一条
+    const details =
+      Array.isArray(err.details) && err.details.length > 0
+        ? { errors: err.details }
+        : null;
+    return sendError(res, err.code, err.message, err.httpStatus, details);
   }
 
   // 2) 请求体 JSON 解析失败（客户端提交了非法 JSON）
