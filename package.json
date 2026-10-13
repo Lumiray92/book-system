@@ -1,0 +1,24 @@
+{
+  "name": "book-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "图书借阅系统（后台管理）— Express + MySQL",
+  "keywords": [
+    "express",
+    "mysql",
+    "book-management"
+  ],
+  "license": "MIT",
+  "workspaces": [
+    "server"
+  ],
+  "scripts": {
+    "dev": "npm --workspace server run dev",
+    "start": "npm --workspace server run start",
+    "test": "npm --workspace server run test",
+    "db:init": "npm --workspace server run db:init"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
