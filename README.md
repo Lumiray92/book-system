@@ -27,7 +27,7 @@
 | [`docs/需求对照表.md`](docs/需求对照表.md) | 逐条对照试卷「四、具体要求」15 条与「五、注意事项」，并说明有意偏离之处 |
 | [`docs/验收记录.md`](docs/验收记录.md) | 回归测试、CI、浏览器端到端验收的实际结果与数据 |
 | [`docs/design/页面设计说明.md`](docs/design/页面设计说明.md) | 各页面的布局、字段、交互与提示语设计 |
-| [`docs/screenshots/`](docs/screenshots/) | 11 张实际页面截图，按试卷图号命名 |
+| [`docs/screenshots/`](docs/screenshots/) | 12 张实际页面截图，按试卷图号命名 |
 
 ---
 
@@ -79,7 +79,9 @@ book-system/
 │  │  ├─ controllers/           # 控制器
 │  │  ├─ routes/                # 路由
 │  │  └─ middleware/            # 请求日志、统一异常处理
-│  ├─ scripts/init-db.js        # 执行 sql/ 下的建表与测试数据脚本
+│  ├─ scripts/
+│  │  ├─ init-db.js             # 执行 sql/ 下的建表与测试数据脚本
+│  │  └─ e2e-pages.js           # 页面端到端验收（真实 Chrome）
 │  ├─ test/                     # 接口回归测试（Vitest + Supertest）
 │  └─ vitest.config.js
 ├─ web/                         # 前端：页面
@@ -165,16 +167,18 @@ npm run dev         # 启动开发服务器
 ## 七、测试
 
 ```bash
-npm test            # 接口回归测试（Vitest + Supertest）
-npm run test:web    # 前端静态资源检查
+npm test            # 接口回归测试（Vitest + Supertest），113 条
+npm run test:web    # 前端静态资源检查，28 项
+npm run test:e2e    # 页面端到端验收（需本机 Chrome + 服务已启动），58 条
 ```
 
-接口回归测试共 113 条用例，覆盖增删改查、分页、模糊查询、校验分支、
+接口回归测试覆盖增删改查、分页、模糊查询、校验分支、
 只读字段防篡改与事务回滚。测试跑在**独立库 `book_db_test`** 上，
 每次运行由 `globalSetup` 直接执行 `sql/*.sql` 重建，
 因此结果可重复，且**不会污染开发库** `book_db`。
 
-> 回归测试需要数据库可连接。CI 中由 GitHub Actions 拉起 MySQL 服务容器后执行。
+`npm test` 与 `npm run test:web` 在 CI 中执行；
+`npm run test:e2e` 需要真实浏览器，故只在本地运行。
 
 实际运行结果见 [`docs/验收记录.md`](docs/验收记录.md)。
 
