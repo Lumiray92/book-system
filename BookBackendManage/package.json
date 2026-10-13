@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "book-backend-manage",
   "version": "1.0.0",
   "private": true,
   "description": "图书借阅系统后台管理 — Express 服务端",

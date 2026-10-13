@@ -14,7 +14,7 @@ import { createApiRouter } from './routes/index.js';
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
-/** 前端页面目录：server/src -> ../../web */
+/** 前端页面目录：BookBackendManage/src -> ../../web */
 const WEB_DIR = path.resolve(currentDir, '../../web');
 
 /**

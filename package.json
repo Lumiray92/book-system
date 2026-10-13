@@ -10,15 +10,15 @@
   ],
   "license": "MIT",
   "workspaces": [
-    "server"
+    "BookBackendManage"
   ],
   "scripts": {
-    "dev": "npm --workspace server run dev",
-    "start": "npm --workspace server run start",
-    "test": "npm --workspace server run test",
-    "test:e2e": "npm --workspace server run test:e2e",
+    "dev": "npm --workspace BookBackendManage run dev",
+    "start": "npm --workspace BookBackendManage run start",
+    "test": "npm --workspace BookBackendManage run test",
+    "test:e2e": "npm --workspace BookBackendManage run test:e2e",
     "test:web": "node scripts/check-web-assets.mjs",
-    "db:init": "npm --workspace server run db:init"
+    "db:init": "npm --workspace BookBackendManage run db:init"
   },
   "engines": {
     "node": ">=18"

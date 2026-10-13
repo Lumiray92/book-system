@@ -24,6 +24,7 @@
 
 | 文档 | 内容 |
 |---|---|
+| [`docs/操作手册.md`](docs/操作手册.md) | **从启动到验收再到关闭**的完整操作手册，含排查与速查表 |
 | [`docs/需求对照表.md`](docs/需求对照表.md) | 逐条对照试卷「四、具体要求」15 条与「五、注意事项」，并说明有意偏离之处 |
 | [`docs/验收记录.md`](docs/验收记录.md) | 回归测试、CI、浏览器端到端验收的实际结果与数据 |
 | [`docs/design/页面设计说明.md`](docs/design/页面设计说明.md) | 各页面的布局、字段、交互与提示语设计 |
@@ -68,7 +69,7 @@ book-system/
 ├─ sql/                         # 试卷要求提交的数据库对象导出脚本
 │  ├─ 01_schema.sql             # 建表 + 主键自增
 │  └─ 02_seed.sql               # 测试数据（每表 ≥ 5 条）
-├─ server/                      # 后端：Express 应用
+├─ BookBackendManage/           # 后端：Express 应用（试卷第 2 条要求的 Web 工程）
 │  ├─ src/
 │  │  ├─ app.js                 # 应用装配
 │  │  ├─ server.js              # 启动入口
@@ -83,6 +84,7 @@ book-system/
 │  │  ├─ init-db.js             # 执行 sql/ 下的建表与测试数据脚本
 │  │  └─ e2e-pages.js           # 页面端到端验收（真实 Chrome）
 │  ├─ test/                     # 接口回归测试（Vitest + Supertest）
+│  ├─ .env.example              # 环境变量示例（复制为 .env，.env 不入库）
 │  └─ vitest.config.js
 ├─ web/                         # 前端：页面
 │  ├─ index.html                # 列表页（图-1 / 图-2）
@@ -91,7 +93,7 @@ book-system/
 │  ├─ edit.html                 # 修改页（图-6）
 │  └─ assets/{css,js}
 ├─ scripts/check-web-assets.mjs # 前端静态资源检查
-├─ docs/                        # 需求对照表、验收记录、页面设计说明、截图
+├─ docs/                        # 操作手册、需求对照表、验收记录、页面设计说明、截图
 └─ package.json                 # npm workspaces
 ```
 
@@ -110,7 +112,7 @@ D:\APP\MySQL\stop-mysql.bat    :: 停止
 
 ### 2. 环境变量
 
-复制 `server/.env.example` 为 `server/.env` 并按实际填写：
+复制 `BookBackendManage/.env.example` 为 `BookBackendManage/.env` 并按实际填写：
 
 ```ini
 DB_HOST=127.0.0.1
@@ -140,6 +142,8 @@ npm run dev         # 启动开发服务器
 ```
 
 浏览器访问 <http://localhost:3000> 进入图书借阅系统后台管理首页。
+
+> 逐步的启动 / 验收 / 关闭流程与排错，见 **[操作手册](docs/操作手册.md)**。
 
 ---
 
@@ -188,7 +192,15 @@ npm run test:e2e    # 页面端到端验收（需本机 Chrome + 服务已启动
 
 - 本仓库的 Issue / PR / Actions 流程见 `.github/`。
 - 分支策略：`main` 为基线，功能分支 `feat/*` 开发，PR 合并后删除分支。
-- 已按 `quiz07.md` 初始化前后端两个 Issue，并各自通过 PR 合并落地。
+- 已按 `quiz07.md` 初始化前后端两个 Issue，并各自通过 PR 合并落地：
+  `feat/backend`（PR #3）、`feat/frontend`（PR #4），两个 PR 合并后分支已删除。
+
+**流程偏差说明（据实记录）**：功能开发全部走了上述流程，但有**一次文档更正**
+（提交 `c5f4206`「docs: 修正前端静态资源检查的项数」，修正三份 Markdown 里
+与实际运行结果不符的数字）是**直接提交到 `main`** 的，未开 PR。
+该次提交只改了 `README.md`、`docs/需求对照表.md`、`docs/验收记录.md` 三份文档共 4 行，
+**不涉及任何源码、SQL 或测试文件**。如需严格对齐「一律走 PR」的要求，
+可将其视为流程瑕疵；此处如实标注，不作掩饰。
 
 ### 分层与事务
 
@@ -200,6 +212,6 @@ routes → controller → service → dao → mysql2 连接池
 
 试卷第 9 条要求「为业务对象添加声明式事务支持，以代码方式实现事务不得分」。
 Spring 的 `@Transactional` 依赖 AOP 容器，Express 无对应机制，
-因此以 `withTransaction(fn)`（`server/src/config/db.js`）提供等价能力：
+因此以 `withTransaction(fn)`（`BookBackendManage/src/config/db.js`）提供等价能力：
 **事务边界统一收口在该包装器内，业务代码中不出现 `begin` / `commit` / `rollback`**。
 回归测试 `test/transaction.test.js` 会在源码层面守住这条约束。
