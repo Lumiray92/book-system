@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "图书借阅系统后台管理 — Express 服务端",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:init": "node scripts/init-db.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
+    "mysql2": "^3.24.5"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1",
+    "vitest": "^5.0.4"
+  }
+}
