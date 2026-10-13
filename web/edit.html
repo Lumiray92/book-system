@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>修改图书信息</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="container container-narrow">
+    <!-- 图-6：标题 -->
+    <h1 class="page-title">修改图书信息</h1>
+
+    <!-- 图-6：两列表单；入库人、入库时间为只读，不可修改 -->
+    <form id="bookForm" onsubmit="return false;">
+        <div class="form-grid">
+            <div class="form-item">
+                <label for="bookCode">图书编号:</label>
+                <div class="control">
+                    <input type="text" id="bookCode" maxlength="50" autocomplete="off">
+                    <span class="required-star">*</span>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="bookName">图书名称:</label>
+                <div class="control">
+                    <input type="text" id="bookName" maxlength="100" autocomplete="off">
+                    <span class="required-star">*</span>
+                </div>
+            </div>
+
+            <div class="form-item">
+                <label for="bookType">图书类型:</label>
+                <div class="control">
+                    <!-- 选项由 book_type 表数据动态填充 -->
+                    <select id="bookType">
+                        <option value="">——请选择——</option>
+                    </select>
+                    <span class="required-star">*</span>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="bookAuthor">作者:</label>
+                <div class="control">
+                    <input type="text" id="bookAuthor" maxlength="50" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="form-item">
+                <label for="publishPress">出版社:</label>
+                <div class="control">
+                    <input type="text" id="publishPress" maxlength="100" autocomplete="off">
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="borrowed">是否借阅:</label>
+                <div class="control">
+                    <select id="borrowed">
+                        <option value="0">未借阅</option>
+                        <option value="1">已借阅</option>
+                    </select>
+                    <span class="required-star">*</span>
+                </div>
+            </div>
+
+            <div class="form-item">
+                <label for="createdBy">入库人:</label>
+                <div class="control">
+                    <!-- 试卷要求：修改时入库人只读，不可修改 -->
+                    <input type="text" id="createdBy" readonly>
+                    <span class="required-star">*</span>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="creationTime">入库时间:</label>
+                <div class="control">
+                    <!-- 试卷要求：修改时入库时间只读，不可修改 -->
+                    <input type="date" id="creationTime" disabled>
+                    <span class="required-star">*</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图-6：修改 / 返回 -->
+        <div class="form-actions">
+            <button type="button" class="btn" id="submitBtn">修改</button>
+            <button type="button" class="btn" id="backBtn">返回</button>
+        </div>
+    </form>
+</div>
+
+<script src="assets/js/jquery-1.8.3.min.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/bookForm.js"></script>
+<script>
+    jQuery(function () {
+        window.BookForm.init({ mode: 'edit' });
+    });
+</script>
+</body>
+</html>

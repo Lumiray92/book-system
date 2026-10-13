@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>图书借阅系统-后台管理</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="container">
+    <!-- 图-1：页面标题 -->
+    <h1 class="page-title">图书借阅系统-后台管理</h1>
+
+    <!-- 图-1 / 图-2：按图书名称模糊查询 -->
+    <div class="toolbar">
+        <label for="bookNameInput">图书名称:</label>
+        <input type="text" id="bookNameInput" maxlength="100" autocomplete="off">
+        <button type="button" class="btn" id="searchBtn">查询</button>
+    </div>
+
+    <!-- 图-1：新增入口 -->
+    <div class="actions-bar">
+        <button type="button" class="btn" id="addBtn">新增</button>
+    </div>
+
+    <!-- 图-1：图书列表，隔行变色由样式表实现 -->
+    <div class="table-wrapper">
+        <table class="data-table">
+            <colgroup>
+                <col style="width: 11%">
+                <col style="width: 9%">
+                <col style="width: 18%">
+                <col style="width: 13%">
+                <col style="width: 17%">
+                <col style="width: 11%">
+                <col style="width: 8%">
+                <col style="width: 13%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>图书编号</th>
+                <th>图书分类</th>
+                <th>图书名称</th>
+                <th>作者</th>
+                <th>出版社</th>
+                <th>入库时间</th>
+                <th>是否借阅</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="bookTableBody">
+            <tr class="empty-row">
+                <td colspan="8">正在加载 ...</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 图-1：分页条 -->
+    <div class="pagination" id="pagination"></div>
+</div>
+
+<script src="assets/js/jquery-1.8.3.min.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/index.js"></script>
+</body>
+</html>

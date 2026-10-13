@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>查看图书信息</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="container container-narrow">
+    <!-- 图-3：标题 -->
+    <h1 class="page-title">查看图书信息</h1>
+
+    <div id="errorTip"></div>
+
+    <!-- 图-3：所有显示字段均为只读 -->
+    <div class="form-grid">
+        <div class="form-item">
+            <label for="bookCode">图书编号:</label>
+            <div class="control">
+                <input type="text" id="bookCode" readonly>
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="bookName">图书名称:</label>
+            <div class="control">
+                <input type="text" id="bookName" readonly>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label for="typeName">图书类型:</label>
+            <div class="control">
+                <input type="text" id="typeName" readonly>
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="bookAuthor">作者:</label>
+            <div class="control">
+                <input type="text" id="bookAuthor" readonly>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label for="publishPress">出版社:</label>
+            <div class="control">
+                <input type="text" id="publishPress" readonly>
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="borrowed">是否借阅:</label>
+            <div class="control">
+                <!-- 只读展示，故禁用交互 -->
+                <select id="borrowed" disabled>
+                    <option value="0">未借阅</option>
+                    <option value="1">已借阅</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-item">
+            <label for="createdBy">入库人:</label>
+            <div class="control">
+                <input type="text" id="createdBy" readonly>
+            </div>
+        </div>
+        <div class="form-item">
+            <label for="creationTime">入库时间:</label>
+            <div class="control">
+                <input type="date" id="creationTime" disabled>
+            </div>
+        </div>
+    </div>
+
+    <!-- 图-3：返回按钮 -->
+    <div class="form-actions">
+        <button type="button" class="btn" id="backBtn">返回</button>
+    </div>
+</div>
+
+<script src="assets/js/jquery-1.8.3.min.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/detail.js"></script>
+</body>
+</html>

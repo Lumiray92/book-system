@@ -1,0 +1,308 @@
+/* =====================================================================
+   图书借阅系统-后台管理  样式表
+   布局与配色对齐试卷图-1 ~ 图-9：
+     · 居中标题 + 搜索工具条 + 深灰表头 + 隔行变色表格 + 分页条
+     · 新增/查看/修改页为两列表单，必填项在输入框后带红色星号
+   ===================================================================== */
+
+/* ---------- 基础 ---------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    font-family: "Microsoft YaHei", "微软雅黑", "宋体", Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    background: #f0f2f5;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* 表单类页面容器窄一些，视觉更集中 */
+.container-narrow {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.page-title {
+    margin: 8px 0 28px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    color: #222;
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+    display: inline-block;
+    min-width: 64px;
+    padding: 5px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 20px;
+    color: #333;
+    text-align: center;
+    background: linear-gradient(to bottom, #fdfdfd, #ececec);
+    border: 1px solid #adadad;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: linear-gradient(to bottom, #f4f8ff, #dfeaf7);
+    border-color: #5b9bd5;
+}
+
+.btn:active {
+    background: linear-gradient(to bottom, #dfeaf7, #f4f8ff);
+}
+
+/* ---------- 搜索工具条（图-1 / 图-2） ---------- */
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.toolbar label {
+    font-size: 14px;
+}
+
+.toolbar input[type="text"] {
+    width: 220px;
+    padding: 5px 8px;
+    font-family: inherit;
+    font-size: 13px;
+    border: 1px solid #adadad;
+    border-radius: 2px;
+}
+
+.toolbar input[type="text"]:focus {
+    border-color: #5b9bd5;
+    outline: none;
+}
+
+/* 新增按钮单独一行，左对齐（图-1） */
+.actions-bar {
+    margin-bottom: 10px;
+}
+
+/* ---------- 数据表格（图-1 / 图-2） ---------- */
+.table-wrapper {
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid #b5b5b5;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.data-table th,
+.data-table td {
+    padding: 9px 8px;
+    font-size: 13px;
+    text-align: center;
+    border: 1px solid #cfcfcf;
+    word-break: break-all;
+}
+
+.data-table thead th {
+    font-weight: bold;
+    color: #fff;
+    background: #6d6d6d;
+    border-color: #5c5c5c;
+    white-space: nowrap;
+}
+
+/* 列表隔行变色（试卷硬性要求） */
+.data-table tbody tr:nth-child(odd) {
+    background: #ffffff;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+.data-table tbody tr:hover {
+    background: #e8f2ff;
+}
+
+.data-table td.ops a {
+    margin: 0 4px;
+    color: #1a5fb4;
+    text-decoration: none;
+}
+
+.data-table td.ops a:hover {
+    text-decoration: underline;
+}
+
+/* 表格空数据提示 */
+.data-table .empty-row td {
+    padding: 28px 0;
+    color: #999;
+    background: #fff;
+}
+
+/* ---------- 分页条（图-1） ---------- */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+.pagination a,
+.pagination span.page-no {
+    display: inline-block;
+    min-width: 24px;
+    padding: 3px 6px;
+    color: #1a5fb4;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+
+.pagination a:hover {
+    background: #e8f2ff;
+    border-color: #b8d4f0;
+}
+
+/* 当前页高亮，不可点击 */
+.pagination span.page-no.current {
+    font-weight: bold;
+    color: #fff;
+    background: #6d6d6d;
+    border-color: #5c5c5c;
+    cursor: default;
+}
+
+.pagination .disabled {
+    color: #bbb;
+    cursor: not-allowed;
+}
+
+.pagination .page-jump {
+    margin-left: 10px;
+    color: #333;
+}
+
+.pagination .page-jump input {
+    width: 46px;
+    padding: 3px 6px;
+    font-family: inherit;
+    font-size: 13px;
+    text-align: center;
+    border: 1px solid #adadad;
+    border-radius: 2px;
+}
+
+.pagination .page-jump .btn {
+    min-width: 48px;
+    padding: 3px 10px;
+    margin-left: 6px;
+}
+
+/* ---------- 两列表单（图-3 / 图-4 / 图-6） ---------- */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 320px));
+    justify-content: center;
+    gap: 20px 40px;
+    margin-bottom: 36px;
+}
+
+.form-item {
+    display: flex;
+    align-items: center;
+}
+
+.form-item > label {
+    flex: 0 0 78px;
+    font-size: 14px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.form-item .control {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    gap: 6px;
+}
+
+.form-item .control input,
+.form-item .control select {
+    width: 100%;
+    max-width: 200px;
+    padding: 5px 8px;
+    font-family: inherit;
+    font-size: 13px;
+    color: #333;
+    background: #fff;
+    border: 1px solid #adadad;
+    border-radius: 2px;
+}
+
+.form-item .control input:focus,
+.form-item .control select:focus {
+    border-color: #5b9bd5;
+    outline: none;
+}
+
+/* 只读与禁用状态：图-3 全部字段只读，图-6 的入库人/入库时间只读 */
+.form-item .control input[readonly],
+.form-item .control input:disabled,
+.form-item .control select:disabled {
+    color: #555;
+    background: #f5f5f5;
+    cursor: not-allowed;
+}
+
+/* 必填星号，位于输入框之后（与图-4 一致） */
+.required-star {
+    color: #d93025;
+    font-weight: bold;
+}
+
+/* ---------- 表单按钮区 ---------- */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+}
+
+.form-actions .btn {
+    min-width: 72px;
+}
+
+/* ---------- 加载与提示 ---------- */
+.loading {
+    padding: 28px 0;
+    color: #888;
+    text-align: center;
+}
+
+.error-tip {
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    color: #a8071a;
+    background: #fff1f0;
+    border: 1px solid #ffccc7;
+    border-radius: 3px;
+}
