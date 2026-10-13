@@ -19,7 +19,7 @@ import { TEST_DB_NAME } from './testEnv.js';
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
-/** sql 目录：server/test -> ../../sql，即项目根目录下的 sql/ */
+/** sql 目录：BookBackendManage/test -> ../../sql，即项目根目录下的 sql/ */
 const SQL_DIR = path.resolve(currentDir, '../../sql');
 
 /**

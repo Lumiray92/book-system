@@ -15,7 +15,7 @@ import mysql from 'mysql2/promise';
 import { config } from '../src/config/env.js';
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
-// server/scripts -> ../../sql，即项目根目录下的 sql/
+// BookBackendManage/scripts -> ../../sql，即项目根目录下的 sql/
 const SQL_DIR = path.resolve(currentDir, '../../sql');
 
 /** 按顺序执行的脚本清单 */

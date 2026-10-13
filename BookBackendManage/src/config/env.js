@@ -1,6 +1,6 @@
 /**
  * 环境变量配置
- * 统一从 server/.env 读取，并做必要的缺省与校验，避免拼写错误导致连接串错乱。
+ * 统一从 BookBackendManage/.env 读取，并做必要的缺省与校验，避免拼写错误导致连接串错乱。
  */
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
-// src/config -> ../../.env，即 server/.env
+// src/config -> ../../.env，即 BookBackendManage/.env
 // quiet: 关闭 dotenv v17+ 默认打印的注入提示，避免污染服务启动日志与测试输出
 dotenv.config({ path: path.resolve(currentDir, '../../.env'), quiet: true });
 
@@ -37,7 +37,7 @@ function readInt(name, fallback) {
 function readRequired(name) {
   const raw = process.env[name];
   if (raw === undefined || raw === '') {
-    throw new Error(`缺少必填环境变量 ${name}，请检查 server/.env`);
+    throw new Error(`缺少必填环境变量 ${name}，请检查 BookBackendManage/.env`);
   }
   return raw;
 }
