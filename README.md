@@ -168,7 +168,7 @@ npm run dev         # 启动开发服务器
 
 ```bash
 npm test            # 接口回归测试（Vitest + Supertest），113 条
-npm run test:web    # 前端静态资源检查，28 项
+npm run test:web    # 前端静态资源检查，33 项
 npm run test:e2e    # 页面端到端验收（需本机 Chrome + 服务已启动），58 条
 ```
 
