@@ -29,13 +29,14 @@ export function sendSuccess(res, data = null, message = '操作成功') {
  * @param {number} code      业务状态码
  * @param {string} message   提示信息
  * @param {number} [httpStatus] HTTP 状态码
+ * @param {*}      [data]    附加信息，如校验失败时的逐字段错误明细
  * @returns {import('express').Response}
  */
-export function sendError(res, code, message, httpStatus = 400) {
+export function sendError(res, code, message, httpStatus = 400, data = null) {
   return res.status(httpStatus).json({
     code,
     message,
-    data: null,
+    data,
   });
 }
 
