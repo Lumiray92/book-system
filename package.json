@@ -16,6 +16,8 @@
     "dev": "npm --workspace server run dev",
     "start": "npm --workspace server run start",
     "test": "npm --workspace server run test",
+    "test:e2e": "npm --workspace server run test:e2e",
+    "test:web": "node scripts/check-web-assets.mjs",
     "db:init": "npm --workspace server run db:init"
   },
   "engines": {

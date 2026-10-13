@@ -9,6 +9,26 @@
 > `quiz07.md` 明确指定「前后端：Express、数据库：MySQL」。
 > 本项目保留原卷**全部业务规则、表结构、页面原型与分层架构要求**，用 Express 重新实现。
 
+### 关于开发工具
+
+`quiz07.md` 第 1 条要求「使用 Qwen code 开发」。**本项目的实际开发工具是 Claude Code，
+不是 Qwen Code**，此处据实说明，未作替换或美化。
+
+其余要求（Express + MySQL 技术栈、Git 版本管理、GitHub 托管并初始化前后端 Issue、
+完成任务提交 PR 并在合并后删除分支、使用 Actions 进行回归测试）均已按原文落实，
+逐条落实情况见 [`docs/需求对照表.md`](docs/需求对照表.md)。
+
+---
+
+## 交付文档
+
+| 文档 | 内容 |
+|---|---|
+| [`docs/需求对照表.md`](docs/需求对照表.md) | 逐条对照试卷「四、具体要求」15 条与「五、注意事项」，并说明有意偏离之处 |
+| [`docs/验收记录.md`](docs/验收记录.md) | 回归测试、CI、浏览器端到端验收的实际结果与数据 |
+| [`docs/design/页面设计说明.md`](docs/design/页面设计说明.md) | 各页面的布局、字段、交互与提示语设计 |
+| [`docs/screenshots/`](docs/screenshots/) | 12 张实际页面截图，按试卷图号命名 |
+
 ---
 
 ## 一、功能一览
@@ -43,30 +63,35 @@
 ```
 book-system/
 ├─ .github/
-│  ├─ workflows/ci.yml          # Actions 回归测试
+│  ├─ workflows/ci.yml          # Actions 回归测试（后端接口 + 前端静态资源）
 │  └─ ISSUE_TEMPLATE/           # 前端 / 后端 Issue 模板
-├─ sql/
+├─ sql/                         # 试卷要求提交的数据库对象导出脚本
 │  ├─ 01_schema.sql             # 建表 + 主键自增
 │  └─ 02_seed.sql               # 测试数据（每表 ≥ 5 条）
 ├─ server/                      # 后端：Express 应用
 │  ├─ src/
 │  │  ├─ app.js                 # 应用装配
 │  │  ├─ server.js              # 启动入口
-│  │  ├─ config/                # 数据库连接池、环境变量
+│  │  ├─ config/                # 数据库连接池、环境变量、声明式事务
 │  │  ├─ models/                # 实体（BookInfo / BookType）
 │  │  ├─ dao/                   # 数据访问层
 │  │  ├─ services/              # 业务层（事务边界）
 │  │  ├─ controllers/           # 控制器
 │  │  ├─ routes/                # 路由
-│  │  └─ middleware/            # 参数校验、统一异常处理
-│  └─ test/                     # 回归测试
+│  │  └─ middleware/            # 请求日志、统一异常处理
+│  ├─ scripts/
+│  │  ├─ init-db.js             # 执行 sql/ 下的建表与测试数据脚本
+│  │  └─ e2e-pages.js           # 页面端到端验收（真实 Chrome）
+│  ├─ test/                     # 接口回归测试（Vitest + Supertest）
+│  └─ vitest.config.js
 ├─ web/                         # 前端：页面
 │  ├─ index.html                # 列表页（图-1 / 图-2）
 │  ├─ detail.html               # 查看页（图-3）
 │  ├─ add.html                  # 新增页（图-4）
 │  ├─ edit.html                 # 修改页（图-6）
-│  └─ assets/{css,js,img}
-├─ docs/design/                 # 页面设计说明
+│  └─ assets/{css,js}
+├─ scripts/check-web-assets.mjs # 前端静态资源检查
+├─ docs/                        # 需求对照表、验收记录、页面设计说明、截图
 └─ package.json                 # npm workspaces
 ```
 
@@ -142,8 +167,20 @@ npm run dev         # 启动开发服务器
 ## 七、测试
 
 ```bash
-npm test            # 运行接口回归测试
+npm test            # 接口回归测试（Vitest + Supertest），113 条
+npm run test:web    # 前端静态资源检查，28 项
+npm run test:e2e    # 页面端到端验收（需本机 Chrome + 服务已启动），58 条
 ```
+
+接口回归测试覆盖增删改查、分页、模糊查询、校验分支、
+只读字段防篡改与事务回滚。测试跑在**独立库 `book_db_test`** 上，
+每次运行由 `globalSetup` 直接执行 `sql/*.sql` 重建，
+因此结果可重复，且**不会污染开发库** `book_db`。
+
+`npm test` 与 `npm run test:web` 在 CI 中执行；
+`npm run test:e2e` 需要真实浏览器，故只在本地运行。
+
+实际运行结果见 [`docs/验收记录.md`](docs/验收记录.md)。
 
 ---
 
@@ -151,3 +188,18 @@ npm test            # 运行接口回归测试
 
 - 本仓库的 Issue / PR / Actions 流程见 `.github/`。
 - 分支策略：`main` 为基线，功能分支 `feat/*` 开发，PR 合并后删除分支。
+- 已按 `quiz07.md` 初始化前后端两个 Issue，并各自通过 PR 合并落地。
+
+### 分层与事务
+
+按试卷第 5 ~ 9 条划分 DAO / Service / Controller 三层，依赖由工厂函数注入：
+
+```
+routes → controller → service → dao → mysql2 连接池
+```
+
+试卷第 9 条要求「为业务对象添加声明式事务支持，以代码方式实现事务不得分」。
+Spring 的 `@Transactional` 依赖 AOP 容器，Express 无对应机制，
+因此以 `withTransaction(fn)`（`server/src/config/db.js`）提供等价能力：
+**事务边界统一收口在该包装器内，业务代码中不出现 `begin` / `commit` / `rollback`**。
+回归测试 `test/transaction.test.js` 会在源码层面守住这条约束。
